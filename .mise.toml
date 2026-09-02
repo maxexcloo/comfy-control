@@ -4,7 +4,7 @@ _.file = { path = ".env", redact = true }
 [tools]
 actionlint = "1.7.12"
 hadolint = "2.15.1"
-prek = "0.4.13"
+prek = "0.5.2"
 prettier = "3.9.6"
 python = "3.14.7"
 ruff = "0.16.2"
