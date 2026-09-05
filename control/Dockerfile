@@ -1,6 +1,6 @@
 FROM python:3.12.12-slim-bookworm
 
-COPY --from=ghcr.io/astral-sh/uv:0.12.3 /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.12.10 /uv /usr/local/bin/uv
 
 ENV PATH=/opt/venv/bin:${PATH} \
     PORT=8000 \
