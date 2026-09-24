@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-build = ["huggingface-hub>=0.28,<2"]
+build = ["huggingface-hub>=2,<3"]
 modal = ["modal>=1.5.3,<2"]
 test = ["aiohttp>=3.11,<4", "pytest>=8,<10", "pytest-asyncio>=0.24,<2"]
 vast = [
