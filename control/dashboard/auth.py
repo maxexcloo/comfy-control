@@ -15,7 +15,9 @@ SESSION_SECONDS = 12 * 60 * 60
 
 def bearer_authorised(request: Request, settings: ControlSettings) -> bool:
     scheme, _, value = request.headers.get("authorization", "").partition(" ")
-    return scheme.lower() == "bearer" and hmac.compare_digest(value, settings.api_key)
+    return scheme.lower() == "bearer" and hmac.compare_digest(
+        value.encode(), settings.api_key.encode()
+    )
 
 
 def session_secret(settings: ControlSettings) -> bytes:
@@ -50,7 +52,7 @@ def valid_csrf(request: Request, settings: ControlSettings, token: str) -> bool:
     return (
         ui_authorised(request, settings)
         and expiry >= int(time.time())
-        and hmac.compare_digest(signature, expected)
+        and hmac.compare_digest(signature.encode(), expected.encode())
     )
 
 
@@ -64,7 +66,9 @@ def ui_authorised(request: Request, settings: ControlSettings) -> bool:
     except ValueError:
         return False
     expected = session_token(settings, expires).partition(".")[2]
-    return expires >= int(time.time()) and hmac.compare_digest(signature, expected)
+    return expires >= int(time.time()) and hmac.compare_digest(
+        signature.encode(), expected.encode()
+    )
 
 
 def secure_cookie(request: Request) -> bool:

@@ -15,14 +15,14 @@ def test_control_and_worker_images_use_compatible_python():
     control = (ROOT / "control/Dockerfile").read_text().splitlines()[0]
     worker = (ROOT / "worker/Dockerfile").read_text().splitlines()[0]
 
-    assert control == worker == "FROM python:3.12.12-slim-bookworm"
+    assert control == worker == "FROM python:3.12.15-slim-bookworm"
 
 
 def test_worker_image_uses_one_pinned_cuda_runtime():
     dockerfile = (ROOT / "worker/Dockerfile").read_text()
     constraints = (ROOT / "worker/constraints.txt").read_text().splitlines()
 
-    assert dockerfile.startswith("FROM python:3.12.12-slim-bookworm\n")
+    assert dockerfile.startswith("FROM python:3.12.15-slim-bookworm\n")
     assert "--extra build --extra vast" in dockerfile
     assert "--extra modal" not in dockerfile
     assert "nvidia/cuda" not in dockerfile

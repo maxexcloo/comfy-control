@@ -17,7 +17,7 @@
       "depNameTemplate": "ComfyUI",
       "packageNameTemplate": "https://github.com/Comfy-Org/ComfyUI.git",
       "versioningTemplate": "semver-coerced",
-      "managerFilePatterns": ["/^Dockerfile\\.worker$/"],
+      "managerFilePatterns": ["/^worker/Dockerfile$/"],
       "matchStrings": [
         "# renovate: datasource=git-tags packageName=https://github\\.com/Comfy-Org/ComfyUI\\.git\\n# ComfyUI (?<currentValue>v\\d+\\.\\d+\\.\\d+)\\. Keep the release label and immutable commit in sync\\.\\nARG COMFYUI_REF=(?<currentDigest>[a-f0-9]{40})"
       ]

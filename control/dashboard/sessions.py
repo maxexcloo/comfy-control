@@ -44,9 +44,9 @@ async def create_session(request: Request) -> Response:
     username = str(form.get("username", ""))
     password = str(form.get("password", ""))
     expected_password = settings.ui_password or settings.api_key
-    valid = hmac.compare_digest(username, settings.ui_username) and hmac.compare_digest(
-        password, expected_password
-    )
+    valid = hmac.compare_digest(
+        username.encode(), settings.ui_username.encode()
+    ) and hmac.compare_digest(password.encode(), expected_password.encode())
     if not valid:
         return HTMLResponse(
             login_html(settings, invalid=True),

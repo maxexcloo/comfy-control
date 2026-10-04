@@ -181,43 +181,46 @@ class ControlMedia:
         runtime = self.controller.providers[provider]
         base_url = self.controller.worker_url(runtime, "")
         resolved = urljoin(f"{base_url}/", url)
-        headers = {}
-        local = resolved == base_url or resolved.startswith(f"{base_url}/")
-        if local:
-            headers["Authorization"] = f"Bearer {runtime.config.api_key}"
-        client = runtime.client if local else self.client
-        async with client.stream("GET", resolved, headers=headers) as response:
-            if response.is_redirect and response.headers.get("location"):
-                await self.download(
-                    history_id, provider, response.headers["location"], fallback_name
+        for _ in range(6):
+            headers = {}
+            local = resolved == base_url or resolved.startswith(f"{base_url}/")
+            if local:
+                headers["Authorization"] = f"Bearer {runtime.config.api_key}"
+            client = runtime.client if local else self.client
+            async with client.stream(
+                "GET", resolved, headers=headers, follow_redirects=False
+            ) as response:
+                if response.is_redirect and response.headers.get("location"):
+                    resolved = urljoin(resolved, response.headers["location"])
+                    continue
+                response.raise_for_status()
+                filename = unquote(Path(urlparse(resolved).path).name) or fallback_name
+                content_type = response.headers.get(
+                    "content-type", media_type_from_filename(filename)
+                )
+                extension = media_extension(content_type)
+                directory = self.media_path / history_id
+                directory.mkdir(parents=True, exist_ok=True)
+                path = directory / f"{uuid.uuid4().hex}{extension}"
+                temporary = path.with_suffix(path.suffix + ".part")
+                size = 0
+                try:
+                    with temporary.open("wb") as file:
+                        async for chunk in response.aiter_bytes():
+                            file.write(chunk)
+                            size += len(chunk)
+                    temporary.replace(path)
+                finally:
+                    temporary.unlink(missing_ok=True)
+                self.store.save_media(
+                    history_id,
+                    content_type.split(";", 1)[0],
+                    safe_filename(filename, extension),
+                    path,
+                    size,
                 )
                 return
-            response.raise_for_status()
-            filename = unquote(Path(urlparse(resolved).path).name) or fallback_name
-            content_type = response.headers.get(
-                "content-type", media_type_from_filename(filename)
-            )
-            extension = media_extension(content_type)
-            directory = self.media_path / history_id
-            directory.mkdir(parents=True, exist_ok=True)
-            path = directory / f"{uuid.uuid4().hex}{extension}"
-            temporary = path.with_suffix(path.suffix + ".part")
-            size = 0
-            try:
-                with temporary.open("wb") as file:
-                    async for chunk in response.aiter_bytes():
-                        file.write(chunk)
-                        size += len(chunk)
-                temporary.replace(path)
-            finally:
-                temporary.unlink(missing_ok=True)
-            self.store.save_media(
-                history_id,
-                content_type.split(";", 1)[0],
-                safe_filename(filename, extension),
-                path,
-                size,
-            )
+        raise ValueError("media URL redirected too many times")
 
     async def archive_images(
         self, history_id: str, provider: str, response: httpx.Response
