@@ -1,4 +1,3 @@
-import hmac
 import json
 import time
 import uuid
@@ -72,9 +71,7 @@ async def provider_action(
     if not (ui_authorised(request, settings) or bearer_authorised(request, settings)):
         return Response(status_code=401)
     expected = f"{provider_id}/{action_name}"
-    if not hmac.compare_digest(
-        request.headers.get("x-comfy-control-action", ""), expected
-    ):
+    if request.headers.get("x-comfy-control-action", "") != expected:
         return error("provider action confirmation is missing", 400, "invalid_action")
     request_id = uuid.uuid4().hex[:16]
     controller.store.event(

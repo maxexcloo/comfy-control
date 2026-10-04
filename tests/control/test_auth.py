@@ -86,3 +86,36 @@ async def test_login_accepts_unicode_credentials():
     response = await create_session(request)
     assert response.status_code == 303
     assert "Secure" in response.headers["set-cookie"]
+
+
+async def test_media_routes_reject_unicode_bearer_without_exception():
+    from control.operations.media import search_media
+
+    request = Request(
+        {
+            "type": "http",
+            "headers": [(b"authorization", "Bearer café".encode())],
+            "app": SimpleNamespace(
+                state=SimpleNamespace(controller=None, settings=settings())
+            ),
+        }
+    )
+    assert (await search_media(request)).status_code == 401
+
+
+async def test_provider_action_rejects_unicode_confirmation_without_exception():
+    from control.operations.providers import provider_action
+
+    request = Request(
+        {
+            "type": "http",
+            "headers": [
+                (b"authorization", b"Bearer test-key"),
+                (b"x-comfy-control-action", "café".encode()),
+            ],
+            "app": SimpleNamespace(
+                state=SimpleNamespace(controller=None, settings=settings())
+            ),
+        }
+    )
+    assert (await provider_action("worker", "start", request)).status_code == 400

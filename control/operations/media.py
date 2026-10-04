@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hmac
 from pathlib import Path
 
 from fastapi import APIRouter, Request
@@ -8,6 +7,7 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 
 from control.config import ControlSettings
 from control.contracts import MediaLineage, MediaSearch
+from control.dashboard.auth import bearer_authorised
 from control.http import error
 from control.service import Controller
 
@@ -18,15 +18,10 @@ def dependencies(request: Request) -> tuple[Controller, ControlSettings]:
     return request.app.state.controller, request.app.state.settings
 
 
-def authorised(request: Request, settings: ControlSettings) -> bool:
-    scheme, _, value = request.headers.get("authorization", "").partition(" ")
-    return scheme.lower() == "bearer" and hmac.compare_digest(value, settings.api_key)
-
-
 @router.get("", operation_id="search_media", response_model=MediaSearch)
 async def search_media(request: Request) -> Response:
     controller, settings = dependencies(request)
-    if not authorised(request, settings):
+    if not bearer_authorised(request, settings):
         return Response(status_code=401)
     try:
         filters = []
@@ -56,7 +51,7 @@ async def search_media(request: Request) -> Response:
 @router.get("/facets", operation_id="media_facets")
 async def media_facets(request: Request) -> Response:
     controller, settings = dependencies(request)
-    if not authorised(request, settings):
+    if not bearer_authorised(request, settings):
         return Response(status_code=401)
     return JSONResponse(controller.store.media_facets())
 
@@ -66,7 +61,7 @@ async def media_facets(request: Request) -> Response:
 )
 async def media_lineage(asset_id: int, request: Request) -> Response:
     controller, settings = dependencies(request)
-    if not authorised(request, settings):
+    if not bearer_authorised(request, settings):
         return Response(status_code=401)
     if controller.store.media_asset(asset_id) is None:
         return error("media was not found", 404, "not_found")
@@ -76,7 +71,7 @@ async def media_lineage(asset_id: int, request: Request) -> Response:
 @router.get("/{asset_id}", operation_id="media_detail")
 async def media_detail(asset_id: int, request: Request) -> Response:
     controller, settings = dependencies(request)
-    if not authorised(request, settings):
+    if not bearer_authorised(request, settings):
         return Response(status_code=401)
     detail = controller.store.media_detail(asset_id)
     if detail is None:
@@ -87,7 +82,7 @@ async def media_detail(asset_id: int, request: Request) -> Response:
 @router.get("/{asset_id}/content", operation_id="media_content")
 async def media_content(asset_id: int, request: Request) -> Response:
     controller, settings = dependencies(request)
-    if not authorised(request, settings):
+    if not bearer_authorised(request, settings):
         return Response(status_code=401)
     asset = controller.store.media_asset(asset_id)
     if asset is None or not Path(asset.path).is_file():
