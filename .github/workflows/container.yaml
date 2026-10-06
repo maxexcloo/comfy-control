@@ -18,8 +18,24 @@ env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up tools
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.3
+      - name: Run checks
+        run: mise run check
+
   image:
     name: ${{ matrix.role }} image
+    needs: check
     permissions:
       contents: read
       packages: write
@@ -66,6 +82,12 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           sbom: true
           tags: ${{ steps.metadata.outputs.tags }}
-      - name: Smoke-test package
+      - name: Smoke-test runtime
         if: github.event_name == 'pull_request'
-        run: docker run --rm "${IMAGE_NAME}:${{ matrix.role }}" python -c "import ${{ matrix.role }}"
+        run: |
+          if [ "${{ matrix.role }}" = worker ]; then
+            docker run --rm "${IMAGE_NAME}:worker" sh -c \
+              'cd /opt/ComfyUI && python main.py --cpu --quick-test-for-ci --disable-all-custom-nodes'
+          else
+            docker run --rm "${IMAGE_NAME}:control" python -c 'from control.app import create_app'
+          fi

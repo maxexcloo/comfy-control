@@ -20,7 +20,8 @@ lint and bytecode caches.
 Actions linting, Dockerfile linting, formatting, Python linting and the pytest
 suite on the latest Python version pinned by Mise. Run it before handoff.
 
-The container workflow separately builds and smoke-tests the Comfy Control image.
+The container workflow runs these checks before building images. Pull requests also
+smoke-test the images; publishing requires successful checks.
 
 ## Project Boundaries
 

@@ -18,8 +18,8 @@ one current API and does not retain versioned or legacy contracts.
 The lightweight control image contains the API, dashboard and provider control
 plane. The CUDA-enabled worker image contains Comfy Control, pinned ComfyUI, the
 bundled catalogue and model profiles. Run workers on CUDA-capable hosts with
-persistent model and output storage. Its CUDA 13.0 base matches the highest
-minimum CUDA version currently accepted by managed RunPod endpoints.
+persistent model and output storage. Both images use the pinned Python runtime;
+the worker gets its CUDA 13 runtime from the pinned PyTorch wheels.
 
 Deploy matching control and worker images. The controller uses the current
 unversioned internal execution contract; compatibility with older worker APIs is

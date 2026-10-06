@@ -1,10 +1,10 @@
-FROM python:3.12.15-slim-bookworm
+FROM python:3.14.8-slim-bookworm
 
 COPY --from=ghcr.io/astral-sh/uv:0.12.23 /uv /usr/local/bin/uv
 
 # renovate: datasource=git-tags packageName=https://github.com/Comfy-Org/ComfyUI.git
-# ComfyUI v0.32.0. Keep the release label and immutable commit in sync.
-ARG COMFYUI_REF=c2bcbecd82ec5ae66594340b395c24ef0217b238
+# ComfyUI v0.39.0. Keep the release label and immutable commit in sync.
+ARG COMFYUI_REF=b0b743566f65daafc423b4fea8a2fbda94b3384a
 ARG MODEL_PROFILE
 ENV BUILTIN_CATALOGUE_DIR=/opt/comfy-control/catalogue \
     COMFYUI_DIR=/opt/ComfyUI \
@@ -19,7 +19,8 @@ ENV BUILTIN_CATALOGUE_DIR=/opt/comfy-control/catalogue \
     PYTHONUNBUFFERED=1 \
     VIRTUAL_ENV=/opt/venv
 
-RUN apt-get update && \
+RUN sed -i "s|http://deb.debian.org|https://deb.debian.org|g" /etc/apt/sources.list.d/debian.sources && \
+    apt-get update && \
     apt-get install -y --no-install-recommends build-essential ca-certificates ffmpeg git && \
     rm -rf /var/lib/apt/lists/* && \
     uv venv "${VIRTUAL_ENV}" && \
