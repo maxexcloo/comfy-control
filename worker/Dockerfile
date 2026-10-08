@@ -1,6 +1,6 @@
 FROM python:3.14.8-slim-bookworm
 
-COPY --from=ghcr.io/astral-sh/uv:0.12.23 /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.12.24 /uv /usr/local/bin/uv
 
 # renovate: datasource=git-tags packageName=https://github.com/Comfy-Org/ComfyUI.git
 # ComfyUI v0.39.2. Keep the release label and immutable commit in sync.
