@@ -9,7 +9,7 @@ prettier = "3.9.9"
 python = "3.14.8"
 ruff = "0.16.10"
 shellcheck = "0.11.0"
-uv = "0.12.23"
+uv = "0.12.24"
 
 [tasks.check]
 depends = ["test"]
