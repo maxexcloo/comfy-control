@@ -78,9 +78,9 @@ jobs:
           file: ${{ matrix.role }}/Dockerfile
           labels: ${{ steps.metadata.outputs.labels }}
           load: ${{ github.event_name == 'pull_request' }}
-          provenance: mode=max
+          provenance: ${{ github.event_name != 'pull_request' && 'mode=max' || 'false' }}
           push: ${{ github.event_name != 'pull_request' }}
-          sbom: true
+          sbom: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.metadata.outputs.tags }}
       - name: Smoke-test runtime
         if: github.event_name == 'pull_request'

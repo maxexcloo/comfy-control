@@ -2,25 +2,31 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "dependencyDashboard": false,
   "extends": ["config:recommended", ":enablePreCommit"],
-  "packageRules": [
-    {
-      "allowedVersions": "/^13\\.0\\./",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["nvidia/cuda"]
-    }
-  ],
   "customManagers": [
     {
-      "customType": "regex",
       "autoReplaceStringTemplate": "# renovate: datasource=git-tags packageName=https://github.com/Comfy-Org/ComfyUI.git\n# ComfyUI {{{newValue}}}. Keep the release label and immutable commit in sync.\nARG COMFYUI_REF={{{newDigest}}}",
+      "customType": "regex",
       "datasourceTemplate": "git-tags",
       "depNameTemplate": "ComfyUI",
-      "packageNameTemplate": "https://github.com/Comfy-Org/ComfyUI.git",
-      "versioningTemplate": "semver-coerced",
       "managerFilePatterns": ["/^worker/Dockerfile$/"],
       "matchStrings": [
         "# renovate: datasource=git-tags packageName=https://github\\.com/Comfy-Org/ComfyUI\\.git\\n# ComfyUI (?<currentValue>v\\d+\\.\\d+\\.\\d+)\\. Keep the release label and immutable commit in sync\\.\\nARG COMFYUI_REF=(?<currentDigest>[a-f0-9]{40})"
-      ]
+      ],
+      "packageNameTemplate": "https://github.com/Comfy-Org/ComfyUI.git",
+      "versioningTemplate": "semver-coerced"
+    }
+  ],
+  "packageRules": [
+    {
+      "allowedVersions": "/^13\\.0\\./",
+      "description": "Keep CUDA on the supported 13.0 series",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["nvidia/cuda"]
+    },
+    {
+      "allowedVersions": "<2",
+      "description": "Keep Hugging Face Hub compatible with ComfyUI tokenizers",
+      "matchPackageNames": ["huggingface-hub"]
     }
   ]
 }
