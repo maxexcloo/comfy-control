@@ -3,8 +3,8 @@ FROM python:3.14.8-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:0.12.23 /uv /usr/local/bin/uv
 
 # renovate: datasource=git-tags packageName=https://github.com/Comfy-Org/ComfyUI.git
-# ComfyUI v0.39.0. Keep the release label and immutable commit in sync.
-ARG COMFYUI_REF=b0b743566f65daafc423b4fea8a2fbda94b3384a
+# ComfyUI v0.39.2. Keep the release label and immutable commit in sync.
+ARG COMFYUI_REF=3c1b7a17fdf239d35ce98cc777756f572d089795
 ARG MODEL_PROFILE
 ENV BUILTIN_CATALOGUE_DIR=/opt/comfy-control/catalogue \
     COMFYUI_DIR=/opt/ComfyUI \
