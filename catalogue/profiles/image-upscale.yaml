@@ -1,15 +1,15 @@
 name: image-upscale
 description: AI detail restoration and upscaling.
-capabilities: [image_upscale]
 hourly_cost_limit: 0.6
 idle_seconds: 900
 minimum_vram_gb: 0
 recommended_vram_gb: 24
 service_class: interactive
+capabilities: [image_upscale]
 sources:
   - type: huggingface
+    destination: upscale_models
     repo: Comfy-Org/Real-ESRGAN_repackaged
     revision: 612512cf5dfee6e3fda729e422318ebb373e04a1
     include:
       - RealESRGAN_x4plus.safetensors
-    destination: upscale_models

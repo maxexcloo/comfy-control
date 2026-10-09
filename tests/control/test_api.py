@@ -104,6 +104,7 @@ async def test_internal_logs_require_auth(monkeypatch, tmp_path):
 
     assert denied.status_code == 401
     assert response.json() == {
+        "source": "Worker",
         "entries": [
             {
                 "created_at": 1,
@@ -112,7 +113,6 @@ async def test_internal_logs_require_auth(monkeypatch, tmp_path):
                 "source": "Worker",
             }
         ],
-        "source": "Worker",
     }
 
 

@@ -2,6 +2,7 @@ name: comfy-control
 
 services:
   comfy-control:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: control/Dockerfile
@@ -15,18 +16,17 @@ services:
       CONTROL_UI_PASSWORD: ${CONTROL_UI_PASSWORD:?set CONTROL_UI_PASSWORD in .env}
       CONTROL_UI_USERNAME: ${CONTROL_UI_USERNAME:-comfy}
     healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
       test:
         - CMD
         - python
         - -c
         - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready')
-      interval: 30s
-      retries: 5
-      start_period: 10s
-      timeout: 10s
     ports:
       - 28081:8000
-    restart: unless-stopped
     volumes:
       - data:/data
 

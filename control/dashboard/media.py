@@ -42,7 +42,7 @@ async def media_library(request: Request) -> Response:
         filters = []
         for name in ("model", "operation", "provider", "status"):
             if value := request.query_params.get(name):
-                filters.append({"path": name, "operator": "equals", "value": value})
+                filters.append({"operator": "equals", "path": name, "value": value})
         for value in request.query_params.getlist("filter"):
             parts = value.split("|", 2)
             if len(parts) == 3 and parts[0]:
@@ -53,8 +53,8 @@ async def media_library(request: Request) -> Response:
                     pass
                 filters.append(
                     {
-                        "path": parts[0],
                         "operator": parts[1],
+                        "path": parts[0],
                         "value": parameter_value,
                     }
                 )

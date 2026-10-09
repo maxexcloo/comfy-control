@@ -1,13 +1,14 @@
 name: krea-2-turbo
 description: Fast image generation with a distinctive photographic style.
-capabilities: [image_generation]
 hourly_cost_limit: 0.6
 idle_seconds: 900
 minimum_vram_gb: 48
+notes: Gated upstream; HF_TOKEN must have accepted the Krea licence.
 recommended_vram_gb: 48
 service_class: interactive
 benchmarks:
-  - { provider: vast-pod, gpu: RTX A6000, p95_seconds: 15 }
+  - { gpu: RTX A6000, p95_seconds: 15, provider: vast-pod }
+capabilities: [image_generation]
 sources:
   - type: huggingface
     repo: Comfy-Org/Krea-2
@@ -16,4 +17,3 @@ sources:
       - diffusion_models/krea2_turbo_fp8_scaled.safetensors
       - text_encoders/qwen3vl_4b_fp8_scaled.safetensors
       - vae/qwen_image_vae.safetensors
-notes: Gated upstream; HF_TOKEN must have accepted the Krea licence.

@@ -29,6 +29,7 @@ MINIMUM_RELIABILITY = 0.99
 def offer_filters(minimum_vram: int) -> dict[str, object]:
     minimum_system_memory_mb = 64_000 if minimum_vram >= 80 else 16_000
     return {
+        "type": "ondemand",
         "compute_cap": {"gte": MINIMUM_COMPUTE_CAPABILITY},
         "cpu_cores_effective": {"gte": MINIMUM_CPU_CORES},
         "cpu_ram": {"gte": minimum_system_memory_mb},
@@ -39,7 +40,6 @@ def offer_filters(minimum_vram: int) -> dict[str, object]:
         "reliability": {"gte": MINIMUM_RELIABILITY},
         "rentable": {"eq": True},
         "rented": {"eq": False},
-        "type": "ondemand",
         "verified": {"eq": True},
     }
 
@@ -130,7 +130,7 @@ async def deploy_pod(
             offer_id = int(selection.option_id)
         except ValueError as exc:
             raise RuntimeError("selected Vast offer id is invalid") from exc
-        search_filters.update({"ask_contract_id": {"eq": offer_id}, "limit": 1})
+        search_filters.update({"limit": 1, "ask_contract_id": {"eq": offer_id}})
     search = await checked_request(
         client,
         "POST",
@@ -175,14 +175,14 @@ async def deploy_pod(
         json={
             "cancel_unavail": True,
             "disk": WORKER_STORAGE_GB,
-            "env": {
-                **environment,
-                f"-p {management.port}:{management.port}": "1",
-            },
             "image": preferences.worker_image,
             "label": management.name,
             "runtype": "args",
             "target_state": "running",
+            "env": {
+                **environment,
+                f"-p {management.port}:{management.port}": "1",
+            },
         },
     )
 

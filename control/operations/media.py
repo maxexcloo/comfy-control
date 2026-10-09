@@ -27,14 +27,14 @@ async def search_media(request: Request) -> Response:
         filters = []
         for name in ("model", "operation", "provider", "status"):
             if value := request.query_params.get(name):
-                filters.append({"path": name, "operator": "equals", "value": value})
+                filters.append({"operator": "equals", "path": name, "value": value})
         for value in request.query_params.getlist("filter"):
             path, operator, raw = value.split("|", 2)
             try:
                 parsed: object = float(raw)
             except ValueError:
                 parsed = raw
-            filters.append({"path": path, "operator": operator, "value": parsed})
+            filters.append({"operator": operator, "path": path, "value": parsed})
         result = controller.store.media_library(
             query=request.query_params.get("q", ""),
             filters=filters,

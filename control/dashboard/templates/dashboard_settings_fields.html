@@ -4,10 +4,10 @@
     class="btn route-handle"
     data-variant="outline"
     data-size="sm"
-    aria-label="Drag to reorder"
+    aria-label="Drag to Reorder"
     data-route-drag
     draggable="true"
-    title="Drag to reorder"
+    title="Drag to Reorder"
     type="button"
   >
     ↕
@@ -28,7 +28,7 @@
   </select>
   <select
     class="grow select w-full w-auto"
-    aria-label="Model package"
+    aria-label="Model Package"
     data-route-model
   >
     {% for package in models.values() | sum(start=[]) | unique | sort %}
@@ -44,27 +44,27 @@
   </select>
   <button
     class="btn" data-variant="outline" data-size="sm"
-    aria-label="Move up"
+    aria-label="Move Up"
     data-route-up
-    title="Move up"
+    title="Move Up"
     type="button"
   >
     ↑
   </button>
   <button
     class="btn" data-variant="outline" data-size="sm"
-    aria-label="Move down"
+    aria-label="Move Down"
     data-route-down
-    title="Move down"
+    title="Move Down"
     type="button"
   >
     ↓
   </button>
   <button
     class="btn" data-variant="destructive" data-size="sm"
-    aria-label="Remove provider"
+    aria-label="Remove Provider"
     data-route-remove
-    title="Remove provider"
+    title="Remove Provider"
     type="button"
   >
     ×

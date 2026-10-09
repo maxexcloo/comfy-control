@@ -12,9 +12,9 @@ shellcheck = "0.11.0"
 uv = "0.12.24"
 
 [tasks.check]
-depends = ["test"]
 description = "Run all repository checks"
 run = "prek run --all-files"
+depends = ["test"]
 
 [tasks.cleanup]
 description = "Remove caches and bytecode"
@@ -45,4 +45,4 @@ prek install
 
 [tasks.test]
 description = "Run the test suite"
-run = "uv run --python python --isolated --no-editable --refresh-package comfy-control --extra test pytest -q"
+run = "uv run --extra test --isolated --no-editable --python python --refresh-package comfy-control pytest -q"

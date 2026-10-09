@@ -71,7 +71,7 @@ class ComfyClient:
         response = await self.http.post(
             "/upload/image",
             files={"image": (filename, content, content_type)},
-            data={"type": "input", "overwrite": "true"},
+            data={"overwrite": "true", "type": "input"},
         )
         response.raise_for_status()
         return response.json()["name"]

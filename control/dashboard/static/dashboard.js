@@ -249,7 +249,7 @@ if (deployDialog) {
     deployOption.value = option?.provider_option_id || option?.id || "";
     deployVariant.value = option?.variant || "";
     if (!option) {
-      deployDetail.textContent = "The Provider Will Choose Automatically.";
+      deployDetail.textContent = "The provider will choose automatically.";
       return;
     }
     const details = [
@@ -293,7 +293,7 @@ if (deployDialog) {
       deployDialog.showModal();
       const response = await fetch(button.dataset.deployOptions);
       if (!response.ok) {
-        deployDetail.textContent = "Live Availability Could Not Be Loaded.";
+        deployDetail.textContent = "Live availability could not be loaded.";
         deployGpu.replaceChildren(new Option("Automatic", ""));
         deployGpu.disabled = false;
         return;

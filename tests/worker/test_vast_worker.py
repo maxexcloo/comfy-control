@@ -41,6 +41,7 @@ async def test_vast_worker_executes_and_embeds_outputs(monkeypatch):
         return web.json_response(
             {
                 "execution_id": "image-1",
+                "status": "completed",
                 "outputs": [
                     {
                         "content_type": "image/png",
@@ -48,7 +49,6 @@ async def test_vast_worker_executes_and_embeds_outputs(monkeypatch):
                         "url": "/internal/executions/image-1/outputs/0",
                     }
                 ],
-                "status": "completed",
             }
         )
 

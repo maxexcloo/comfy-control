@@ -14,16 +14,16 @@ from providers.vast import VastPodAdapter, VastServerlessAdapter
     ("kind", "resource", "state"),
     [
         ("runpod-pod", {"desiredStatus": "RUNNING"}, "running"),
-        ("runpod", {"workers": [], "workersMin": 0}, "scaled-down"),
-        ("runpod", {"workers": [], "workersMin": 1}, "starting"),
+        ("runpod", {"workersMin": 0, "workers": []}, "scaled-down"),
+        ("runpod", {"workersMin": 1, "workers": []}, "starting"),
         (
             "runpod",
-            {"workers": [{"desiredStatus": "EXITED"}], "workersMin": 1},
+            {"workersMin": 1, "workers": [{"desiredStatus": "EXITED"}]},
             "error",
         ),
         (
             "runpod",
-            {"workers": [{"desiredStatus": "RUNNING"}], "workersMin": 1},
+            {"workersMin": 1, "workers": [{"desiredStatus": "RUNNING"}]},
             "ready",
         ),
         ("salad", {"current_state": {"status": "RUNNING"}}, "running"),
@@ -65,23 +65,23 @@ def test_proxy_panel_url_is_derived_without_an_adapter():
 
 def test_runpod_status_exposes_counts_without_worker_secrets():
     resource = {
+        "workersMax": 2,
+        "workersMin": 1,
         "workers": [
             {
                 "desiredStatus": "RUNNING",
                 "env": {"WORKER_API_KEY": "must-not-leak"},
             }
         ],
-        "workersMax": 2,
-        "workersMin": 1,
     }
 
     state, details = RunPodServerlessAdapter("runpod").status(resource)
 
     assert state == "ready"
     assert details == {
-        "workerStates": {"running": 1},
         "workersMax": 2,
         "workersMin": 1,
+        "workerStates": {"running": 1},
     }
     assert "must-not-leak" not in str(details)
 
@@ -310,8 +310,8 @@ async def test_vast_pod_can_be_discovered_while_ports_are_pending():
                         "actual_status": "loading",
                         "id": 123,
                         "label": "comfy-control",
-                        "ports": {},
                         "public_ipaddr": "192.0.2.1",
+                        "ports": {},
                     }
                 ]
             },

@@ -23,11 +23,11 @@
     </div>
   </section>
   <section class="card p-6 prompt-panel" aria-labelledby="prompt-heading">
-    <div class="studio-section-heading"><div><span class="studio-step">2</span><h2 id="prompt-heading">Prompt and options</h2></div></div>
+    <div class="studio-section-heading"><div><span class="studio-step">2</span><h2 id="prompt-heading">Prompt &amp; Options</h2></div></div>
     <label class="field"><span class="sr-only">Prompt</span><textarea class="textarea" autofocus name="prompt" placeholder="Describe what you want to create…" required rows="6">{{ prefill.prompt or "" }}</textarea></label>
     <div class="studio-controls">
-      <label class="field">Provider<select class="select w-full" name="provider"><option value="">Automatic · best value</option>{% for provider in providers %}<option value="{{ provider }}" {% if prefill.provider == provider %}selected{% endif %}>{{ provider }}</option>{% endfor %}</select></label>
-      <label class="field" data-image-option>Image size<select class="select w-full" name="size">{% for value, label in [("1024x1024", "Square · 1024"), ("1344x768", "Landscape · 1344×768"), ("768x1344", "Portrait · 768×1344")] %}<option value="{{ value }}" {% if prefill.size == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label class="field">Provider<select class="select w-full" name="provider"><option value="">Automatic · Best Value</option>{% for provider in providers %}<option value="{{ provider }}" {% if prefill.provider == provider %}selected{% endif %}>{{ provider }}</option>{% endfor %}</select></label>
+      <label class="field" data-image-option>Image Size<select class="select w-full" name="size">{% for value, label in [("1024x1024", "Square · 1024"), ("1344x768", "Landscape · 1344×768"), ("768x1344", "Portrait · 768×1344")] %}<option value="{{ value }}" {% if prefill.size == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
       <label class="field" data-image-option>Outputs<select class="select w-full" name="n">{% for value in range(1, 5) %}<option value="{{ value }}" {% if prefill.n | default(1) | int == value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
     </div>
     <details class="advanced-options"><summary>Advanced</summary><label class="field advanced-seed">Seed<input class="input" min="0" name="seed" placeholder="Random" type="number" value="{{ prefill.seed }}" /></label><p class="text-muted-foreground">An explicit seed and the same settings reproduce a generation.</p></details>

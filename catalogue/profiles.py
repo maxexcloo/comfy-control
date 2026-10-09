@@ -43,10 +43,10 @@ def catalogue_root() -> Path:
 def profile_details(package: str) -> dict[str, object]:
     path = profile_path(package)
     if path is None:
-        return {"assets": [], "minimum_vram_gb": None}
+        return {"minimum_vram_gb": None, "assets": []}
     profile = yaml.safe_load(path.read_text())
     if not isinstance(profile, dict):
-        return {"assets": [], "minimum_vram_gb": None}
+        return {"minimum_vram_gb": None, "assets": []}
     assets = []
     for source in profile.get("sources", []):
         if not isinstance(source, dict):

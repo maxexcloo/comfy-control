@@ -1,26 +1,26 @@
 id: flux-2-klein-9b/text-to-image
-profile: flux-2-klein-9b
 operation: image_generation
+owned_by: black-forest-labs
+profile: flux-2-klein-9b
 workflow: workflow.json
 workflow_sha256: 2bb6c15c77117fadae5bb1a4a8741684f04911cf8fe20d49acc623286398fa3a
-owned_by: black-forest-labs
 aliases: [flux-2-klein-9b]
-input_map:
-  prompt: { node: "4", input: text }
-  width:
-    - { node: "6", input: width }
-    - { node: "9", input: width }
-  height:
-    - { node: "6", input: height }
-    - { node: "9", input: height }
-  seed: { node: "7", input: noise_seed }
-  steps: { node: "9", input: steps }
-output: { node: "13", type: image }
 defaults:
-  width: 1024
   height: 1024
   seed: 0
   steps: 4
+  width: 1024
+input_map:
+  height:
+    - { input: height, node: "6" }
+    - { input: height, node: "9" }
+  prompt: { input: text, node: "4" }
+  seed: { input: noise_seed, node: "7" }
+  steps: { input: steps, node: "9" }
+  width:
+    - { input: width, node: "6" }
+    - { input: width, node: "9" }
+output: { node: "13", type: image }
 required_files:
   - diffusion_models/flux-2-klein-9b-fp8.safetensors
   - text_encoders/qwen_3_8b_fp8mixed.safetensors

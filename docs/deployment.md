@@ -137,7 +137,7 @@ removed the legacy aggregate usage route, while its replacement is a destructive
 collector queue and must not be polled by a dashboard. Keep
 `usage-statistics-enabled` set to `true` for CLI Proxy API's own telemetry.
 
-## Sizing and scale behaviour
+## Sizing & Scale Behaviour
 
 A bounded live comparison on 14 August 2026 used Flux 2 Klein 9B, Krea 2 Turbo and
 Real-ESRGAN on the same current worker image. These figures are observations rather

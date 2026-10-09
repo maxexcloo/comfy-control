@@ -52,7 +52,7 @@ Image edits accept `image`, `prompt`, and optional `n`, `seed`, `steps` and
 requests accept `prompt`, `size` and `seconds`; image-to-video also accepts the
 first-frame `image`.
 
-## Image upscaling
+## Image Upscaling
 
 `POST /v1/images/upscales` routes an uploaded image through the same configured
 image-provider order as generation. The bundled
@@ -62,11 +62,11 @@ greater than 1 through 4 and defaults to 2×:
 
 ```bash
 curl -D response-headers.txt \
-  -H "Authorization: Bearer ${CONTROL_API_KEY}" \
   -F image=@source.png \
   -F model=image-upscale \
   -F response_format=url \
   -F scale=2 \
+  -H "Authorization: Bearer ${CONTROL_API_KEY}" \
   https://comfy-control.example/v1/images/upscales
 ```
 

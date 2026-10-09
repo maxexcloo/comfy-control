@@ -84,7 +84,7 @@ Automation can read or atomically replace both route families through `GET` or
 A timed-out workflow is removed from the ComfyUI queue or interrupted when already
 running.
 
-## History and Media
+## History & Media
 
 The control plane records every image generation, image edit and video request in
 SQLite. Explicit schema migrations preserve current data. History retains

@@ -1,11 +1,12 @@
 name: minimax-h3
 description: Native 768p text-to-video and image-to-video generation.
-capabilities: [image_to_video, text_to_video]
 hourly_cost_limit: 2
 idle_seconds: 0
 minimum_vram_gb: 80
+notes: Native 768p text-to-video and image-to-video workflows.
 recommended_vram_gb: 80
 service_class: batch
+capabilities: [image_to_video, text_to_video]
 sources:
   - type: huggingface
     repo: Comfy-Org/MiniMax-H3
@@ -15,4 +16,3 @@ sources:
       - text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
       - vae/minimax_h3_video_vae_fp16.safetensors
       - vae/minimax_h3_audio_vae_fp32.safetensors
-notes: Native 768p text-to-video and image-to-video workflows.

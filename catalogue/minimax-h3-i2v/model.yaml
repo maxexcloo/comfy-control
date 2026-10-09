@@ -1,25 +1,25 @@
 id: minimax-h3/image-to-video
-profile: minimax-h3
 operation: video_generation
+owned_by: minimax
+profile: minimax-h3
 workflow: workflow.json
 workflow_sha256: 8ec23bc308d70c0da5b94cf43568799dd4ad6c774e388a66432059a79d3eca79
-owned_by: minimax
 aliases: [minimax-h3-i2v]
-input_map:
-  prompt: { node: "6", input: prompt }
-  image: { node: "5", input: image }
-  width: { node: "6", input: width }
-  height: { node: "6", input: height }
-  length: { node: "6", input: length }
-  seed: { node: "10", input: noise_seed }
-  steps: { node: "8", input: steps }
-output: { node: "15", type: video }
 defaults:
-  width: 1344
   height: 768
   length: 124
   seed: 0
   steps: 20
+  width: 1344
+input_map:
+  height: { input: height, node: "6" }
+  image: { input: image, node: "5" }
+  length: { input: length, node: "6" }
+  prompt: { input: prompt, node: "6" }
+  seed: { input: noise_seed, node: "10" }
+  steps: { input: steps, node: "8" }
+  width: { input: width, node: "6" }
+output: { node: "15", type: video }
 required_files:
   - diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors
   - text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors

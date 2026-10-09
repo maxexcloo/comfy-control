@@ -123,7 +123,7 @@ async def providers(request: Request) -> Response:
     items = [
         {
             "actions": [
-                {"name": name, "confirmation": action.confirmation}
+                {"confirmation": action.confirmation, "name": name}
                 for name, action in controller.available_actions(
                     runtime.config.id
                 ).items()

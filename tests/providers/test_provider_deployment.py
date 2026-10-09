@@ -104,13 +104,13 @@ async def test_runpod_deployment_options_include_live_cost_and_availability(
         return runpod_gpu_response(
             [
                 {
+                    "displayName": "NVIDIA L40S",
+                    "id": "L40S",
+                    "memoryInGb": 48,
                     "community": {
                         "stockStatus": "High",
                         "uninterruptablePrice": 0.42,
                     },
-                    "displayName": "NVIDIA L40S",
-                    "id": "L40S",
-                    "memoryInGb": 48,
                 }
             ]
         )
@@ -148,13 +148,13 @@ async def test_runpod_pod_options_use_live_cloud_stock(monkeypatch):
         return runpod_gpu_response(
             [
                 {
+                    "displayName": "NVIDIA L40S",
+                    "id": "L40S",
+                    "memoryInGb": 48,
                     "community": {
                         "stockStatus": None,
                         "uninterruptablePrice": None,
                     },
-                    "displayName": "NVIDIA L40S",
-                    "id": "L40S",
-                    "memoryInGb": 48,
                     "secure": {
                         "stockStatus": "Medium",
                         "uninterruptablePrice": 0.5,
@@ -213,26 +213,26 @@ async def test_runpod_replaces_stranded_pod_with_cheapest_compatible_gpu(
             return runpod_gpu_response(
                 [
                     {
+                        "displayName": "NVIDIA L40S",
+                        "id": "L40S",
+                        "memoryInGb": 48,
                         "community": {
                             "stockStatus": "High",
                             "uninterruptablePrice": 0.6,
                         },
-                        "displayName": "NVIDIA L40S",
-                        "id": "L40S",
-                        "memoryInGb": 48,
                         "secure": {
                             "stockStatus": "Medium",
                             "uninterruptablePrice": 0.8,
                         },
                     },
                     {
+                        "displayName": "NVIDIA RTX 4090",
+                        "id": "RTX4090",
+                        "memoryInGb": 24,
                         "community": {
                             "stockStatus": "High",
                             "uninterruptablePrice": 0.4,
                         },
-                        "displayName": "NVIDIA RTX 4090",
-                        "id": "RTX4090",
-                        "memoryInGb": 24,
                     },
                 ]
             )
@@ -410,13 +410,13 @@ async def test_deploys_runpod_serverless_template_and_endpoint(tmp_path, monkeyp
             return runpod_gpu_response(
                 [
                     {
+                        "displayName": "NVIDIA L40S",
+                        "id": "NVIDIA L40S",
+                        "memoryInGb": 48,
                         "community": {
                             "stockStatus": "High",
                             "uninterruptablePrice": 0.59,
                         },
-                        "displayName": "NVIDIA L40S",
-                        "id": "NVIDIA L40S",
-                        "memoryInGb": 48,
                     }
                 ]
             )
@@ -470,13 +470,13 @@ async def test_updates_existing_runpod_serverless_template(tmp_path, monkeypatch
             return runpod_gpu_response(
                 [
                     {
+                        "displayName": "NVIDIA L40S",
+                        "id": "NVIDIA L40S",
+                        "memoryInGb": 48,
                         "community": {
                             "stockStatus": "High",
                             "uninterruptablePrice": 0.59,
                         },
-                        "displayName": "NVIDIA L40S",
-                        "id": "NVIDIA L40S",
-                        "memoryInGb": 48,
                     }
                 ]
             )
@@ -526,22 +526,22 @@ async def test_runpod_filters_gpus_by_installed_model_vram(tmp_path, monkeypatch
             return runpod_gpu_response(
                 [
                     {
+                        "displayName": "NVIDIA GeForce RTX 4090",
+                        "id": "NVIDIA GeForce RTX 4090",
+                        "memoryInGb": 24,
                         "community": {
                             "stockStatus": "High",
                             "uninterruptablePrice": 0.34,
                         },
-                        "displayName": "NVIDIA GeForce RTX 4090",
-                        "id": "NVIDIA GeForce RTX 4090",
-                        "memoryInGb": 24,
                     },
                     {
+                        "displayName": "NVIDIA L40S",
+                        "id": "NVIDIA L40S",
+                        "memoryInGb": 48,
                         "community": {
                             "stockStatus": "High",
                             "uninterruptablePrice": 0.59,
                         },
-                        "displayName": "NVIDIA L40S",
-                        "id": "NVIDIA L40S",
-                        "memoryInGb": 48,
                     },
                 ]
             )

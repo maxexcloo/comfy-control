@@ -27,9 +27,9 @@ async def models(request: Request) -> Response:
             "object": "list",
             "data": [
                 {
+                    "created": 0,
                     "id": model_id,
                     "object": "model",
-                    "created": 0,
                     "owned_by": "comfy-control",
                 }
                 for model_id in sorted(model_ids)

@@ -1,24 +1,24 @@
 id: minimax-h3/text-to-video
-profile: minimax-h3
 operation: video_generation
+owned_by: minimax
+profile: minimax-h3
 workflow: workflow.json
 workflow_sha256: c2ec2416507a613c3ffbf794f7ddeaafc8383137b8f866208e3257ea90a23825
-owned_by: minimax
 aliases: [minimax-h3]
-input_map:
-  prompt: { node: "5", input: prompt }
-  width: { node: "5", input: width }
-  height: { node: "5", input: height }
-  length: { node: "5", input: length }
-  seed: { node: "9", input: noise_seed }
-  steps: { node: "7", input: steps }
-output: { node: "14", type: video }
 defaults:
-  width: 1344
   height: 768
   length: 124
   seed: 0
   steps: 20
+  width: 1344
+input_map:
+  height: { input: height, node: "5" }
+  length: { input: length, node: "5" }
+  prompt: { input: prompt, node: "5" }
+  seed: { input: noise_seed, node: "9" }
+  steps: { input: steps, node: "7" }
+  width: { input: width, node: "5" }
+output: { node: "14", type: video }
 required_files:
   - diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors
   - text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors

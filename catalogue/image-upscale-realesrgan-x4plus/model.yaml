@@ -1,15 +1,15 @@
 id: image-upscale/realesrgan-x4plus
-profile: image-upscale
 operation: image_upscale
+owned_by: comfy-control
+profile: image-upscale
 workflow: workflow.json
 workflow_sha256: a1139a110fd48a57bbe53b7fe23e9aa7fb0abf5f4018aabf6eab1035f2031a49
-owned_by: comfy-control
 aliases: [image-upscale]
-input_map:
-  image: { node: "1", input: image }
-  scale: { node: "4", input: scale_by, factor: 0.25 }
-output: { node: "5", type: image }
 defaults:
   scale: 2
+input_map:
+  image: { input: image, node: "1" }
+  scale: { factor: 0.25, input: scale_by, node: "4" }
+output: { node: "5", type: image }
 required_files:
   - upscale_models/RealESRGAN_x4plus.safetensors

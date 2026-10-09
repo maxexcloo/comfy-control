@@ -37,7 +37,7 @@ def test_unicode_bearer_and_forwarded_keys_are_rejected(header):
 
 def test_unicode_websocket_token_is_rejected():
     websocket = WebSocket(
-        {"type": "websocket", "headers": [], "query_string": b"token=caf%C3%A9"},
+        {"query_string": b"token=caf%C3%A9", "type": "websocket", "headers": []},
         receive=None,
         send=None,
     )
@@ -69,7 +69,7 @@ async def test_login_accepts_unicode_credentials():
     body = b"username=Ren%C3%A9e&password=s%C3%A9same"
 
     async def receive():
-        return {"type": "http.request", "body": body, "more_body": False}
+        return {"body": body, "more_body": False, "type": "http.request"}
 
     request = Request(
         {

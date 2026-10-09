@@ -13,7 +13,7 @@ PROVIDER_SETTINGS_PREFIXES = {
 
 def settings_group(name: str) -> tuple[str, str]:
     if name == "display_time_zone":
-        return "Display", "Dates and times"
+        return "Display", "Dates & Times"
     for prefix, label in (
         ("cliproxy_", "CLI Proxy API"),
         ("modal_", "Modal"),
@@ -26,7 +26,7 @@ def settings_group(name: str) -> tuple[str, str]:
     if name in {"civitai_token", "hf_token", "worker_api_key"}:
         return "Worker", "Credentials"
     if name == "routes":
-        return "Routing", "Provider routes"
+        return "Routing", "Provider Routes"
     if name == "model_profiles":
         return "Models", "Installation"
     return "Worker", "Runtime"

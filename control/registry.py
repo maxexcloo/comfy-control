@@ -49,8 +49,8 @@ MODEL_ROUTES = {
             "vast",
         ),
     ),
-    "image-upscale": (
-        "image_upscale",
+    "image-to-video": (
+        "video_generation",
         (
             "modal",
             "runpod-pod",
@@ -60,8 +60,8 @@ MODEL_ROUTES = {
             "vast",
         ),
     ),
-    "image-to-video": (
-        "video_generation",
+    "image-upscale": (
+        "image_upscale",
         (
             "modal",
             "runpod-pod",
@@ -142,8 +142,8 @@ PROVIDER_MODEL_PACKAGES = {
 ROUTE_FAMILIES = {
     "image-edit": "images",
     "image-generation": "images",
-    "image-upscale": "images",
     "image-to-video": "videos",
+    "image-upscale": "images",
     "text-to-video": "videos",
 }
 

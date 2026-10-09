@@ -199,6 +199,7 @@ def worker_app() -> FastAPI:
     @app.get("/internal/logs")
     async def logs() -> dict[str, object]:
         return {
+            "source": "Worker",
             "entries": [
                 {
                     "created_at": 1,
@@ -207,7 +208,6 @@ def worker_app() -> FastAPI:
                     "source": "Worker",
                 }
             ],
-            "source": "Worker",
         }
 
     @app.post("/internal/executions")
@@ -247,6 +247,7 @@ def worker_app() -> FastAPI:
         outputs[execution_id] = output
         return {
             "execution_id": execution_id,
+            "status": "completed",
             "outputs": [
                 {
                     "content_type": output[1],
@@ -255,7 +256,6 @@ def worker_app() -> FastAPI:
                     "url": f"http://worker/internal/executions/{execution_id}/outputs/0",
                 }
             ],
-            "status": "completed",
         }
 
     @app.get("/internal/executions/{execution_id}/outputs/0")
@@ -396,6 +396,7 @@ async def test_controller_prefers_internal_execution_contract(tmp_path: Path):
         assert spec["parameters"]["prompt"] == "internal contract"
         return {
             "execution_id": spec["execution_id"],
+            "status": "completed",
             "outputs": [
                 {
                     "content_type": "image/png",
@@ -404,7 +405,6 @@ async def test_controller_prefers_internal_execution_contract(tmp_path: Path):
                     "url": "http://worker/internal/executions/output",
                 }
             ],
-            "status": "completed",
         }
 
     @provider.get("/internal/executions/output")
@@ -518,9 +518,9 @@ async def test_controller_lists_and_routes_models(tmp_path):
         )
 
     assert health.json() == {
-        "status": "ready",
         "models": 4,
         "providers": 1,
+        "status": "ready",
     }
     assert denied.status_code == 401
     assert basic.status_code == 303
@@ -880,7 +880,7 @@ async def test_server_rendered_settings_require_csrf(monkeypatch, tmp_path):
     assert "Generation Queue Limit" in page.text
     assert "Maximum Request Size (MiB)" in page.text
     assert "Australia/Sydney" in page.text
-    assert "Dates and times" in page.text
+    assert "Dates &amp; Times" in page.text
     assert "Provider Routes" in page.text
     assert "Worker Model Packages" in page.text
     assert "Public Base URL" not in page.text
@@ -998,6 +998,7 @@ async def test_controller_rewrites_worker_image_url_to_archived_media(tmp_path):
         spec = json.loads(str((await request.form())["spec"]))
         return {
             "execution_id": spec["execution_id"],
+            "status": "completed",
             "outputs": [
                 {
                     "content_type": "image/png",
@@ -1006,7 +1007,6 @@ async def test_controller_rewrites_worker_image_url_to_archived_media(tmp_path):
                     "url": "http://worker/generated.png",
                 }
             ],
-            "status": "completed",
         }
 
     @provider_app.get("/generated.png")
@@ -1185,8 +1185,8 @@ providers:
             "model": "public/video",
             "prompt": "test",
             "resolution": "480p",
-            "seed": received[0]["seed"],
             "seconds": 6,
+            "seed": received[0]["seed"],
         }
     ]
     assert status.json()["model"] == "public/video"
@@ -1347,8 +1347,8 @@ async def test_dashboard_pages_filter_link_and_stream_current_data(tmp_path):
         history = await client.get(
             "/history",
             params={
-                "operation": "image_generation",
                 "model": "flux-2-klein-9b/text-to-image",
+                "operation": "image_generation",
                 "provider": "worker",
                 "q": "wombat needle",
                 "status": "completed",
@@ -1509,6 +1509,7 @@ providers:
             return JSONResponse(
                 {
                     "execution_id": spec["execution_id"],
+                    "status": "completed",
                     "outputs": [
                         {
                             "content_type": "image/png",
@@ -1517,7 +1518,6 @@ providers:
                             "url": f"http://fallback/output/{status_code}",
                         }
                     ],
-                    "status": "completed",
                 },
                 status_code=status_code,
             )
@@ -1566,8 +1566,8 @@ async def test_controller_reserves_provider_before_readiness_check(tmp_path):
         spec = json.loads(str((await request.form())["spec"]))
         return {
             "execution_id": spec["execution_id"],
-            "outputs": [],
             "status": "completed",
+            "outputs": [],
         }
 
     await runtime.client.aclose()
@@ -1657,9 +1657,9 @@ providers:
         )
 
     assert status.json()["providers"][0]["actions"] == [
-        {"name": "deploy", "confirmation": "Deploy the worker?"}
+        {"confirmation": "Deploy the worker?", "name": "deploy"}
     ]
-    assert deployment_options.json() == {"options": [], "provider": "worker"}
+    assert deployment_options.json() == {"provider": "worker", "options": []}
     assert rejected.status_code == 400
     assert deployed.json()["body"] == {"api_key": "***", "status": "deployed"}
     messages = [
@@ -2172,16 +2172,16 @@ providers:
 def test_usage_normalisers():
     assert usage_with_resource_cost(
         {
-            "metrics": [{"label": "Credit balance", "unit": "USD", "value": 25}],
             "status": "ok",
+            "metrics": [{"label": "Credit balance", "unit": "USD", "value": 25}],
         },
         {"details": {"dph_total": 0.42}},
     ) == {
+        "status": "ok",
         "metrics": [
             {"label": "Credit balance", "unit": "USD", "value": 25},
             {"label": "Running cost", "unit": "USD/hour", "value": 0.42},
         ],
-        "status": "ok",
     }
     assert normalise_usage("runpod", [{"amount": 1.25}, {"amount": 2}])[0] == {
         "label": "Spend",
@@ -2311,10 +2311,10 @@ def test_media_library_fuzzy_search_filters_and_lineage(tmp_path: Path):
 
     result = store.media_library(
         query="wombt GPU",
-        filters=[{"path": "seed", "operator": "equals", "value": 42}],
+        filters=[{"operator": "equals", "path": "seed", "value": 42}],
     )
     history_result = store.media_library(
-        filters=[{"path": "history_id", "operator": "equals", "value": "image_1"}]
+        filters=[{"operator": "equals", "path": "history_id", "value": "image_1"}]
     )
     lineage = store.media_lineage(source_id)
 
@@ -2389,13 +2389,13 @@ def test_provider_identifiers_are_migrated_to_current_names(tmp_path: Path):
                         "maximum_request_bytes": 4 * 1024 * 1024,
                         "public_base_url": "https://old.example",
                         "request_timeout": 12,
+                        "workflow_timeout": 34,
                         "routes": {
                             "image-generation": [
                                 "local-pod",
                                 "runpod-serverless",
                             ]
                         },
-                        "workflow_timeout": 34,
                     }
                 ),
             ),

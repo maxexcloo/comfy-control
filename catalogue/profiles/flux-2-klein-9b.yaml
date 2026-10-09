@@ -1,30 +1,30 @@
 name: flux-2-klein-9b
 description: High-quality image generation and editing.
-capabilities: [image_edit, image_generation]
 hourly_cost_limit: 0.6
 idle_seconds: 900
 minimum_vram_gb: 24
+notes: Gated upstream; HF_TOKEN must have accepted both Black Forest Labs agreements.
 recommended_vram_gb: 32
 service_class: interactive
 benchmarks:
-  - { provider: runpod-pod, gpu: A40, p95_seconds: 10 }
-  - { provider: vast-pod, gpu: RTX A6000, p95_seconds: 10 }
+  - { gpu: A40, p95_seconds: 10, provider: runpod-pod }
+  - { gpu: RTX A6000, p95_seconds: 10, provider: vast-pod }
+capabilities: [image_edit, image_generation]
 sources:
   - type: huggingface
+    destination: diffusion_models
     repo: black-forest-labs/FLUX.2-klein-9b-fp8
     revision: 902d9d510b51533e07729f19211414a3648b77d2
     include:
       - flux-2-klein-9b-fp8.safetensors
-    destination: diffusion_models
   - type: huggingface
     repo: Comfy-Org/flux2-klein-9B
     revision: 23fbc8aa8b621f29f2249cd1bd9c47e5d0eebd83
     include:
       - split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors
   - type: huggingface
+    destination: vae
     repo: black-forest-labs/FLUX.2-small-decoder
     revision: a3efc24f613ef42d9428af62fdbd6f5fd8856c4a
     include:
       - full_encoder_small_decoder.safetensors
-    destination: vae
-notes: Gated upstream; HF_TOKEN must have accepted both Black Forest Labs agreements.

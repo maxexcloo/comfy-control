@@ -27,7 +27,7 @@ async def settings_page(request: Request) -> Response:
             continue
         prepared = prepare_field(field)
         unordered.setdefault(category, {}).setdefault(group, []).append(prepared)
-    category_order = {"Display": 0, "Routing": 1, "Models": 2, "Worker": 3}
+    category_order = {"Display": 0, "Models": 2, "Routing": 1, "Worker": 3}
     categories = {
         category: {
             group: sorted(fields, key=lambda item: str(item["label"]).casefold())

@@ -50,8 +50,8 @@ async def operations_status(request: Request) -> Response:
                     "active_requests": runtime.active_requests,
                     "actions": [
                         {
-                            "name": name,
                             "confirmation": action.confirmation,
+                            "name": name,
                         }
                         for name, action in controller.available_actions(
                             runtime.config.id
@@ -72,19 +72,19 @@ async def operations_status(request: Request) -> Response:
             ]
             + [
                 {
-                    "actions": [],
                     "active_requests": 0,
                     "configured": False,
-                    "details": {},
                     "error": None,
                     "id": provider["id"],
                     "idle_seconds": 0,
-                    "models": [],
                     "panel_url": None,
                     "platform": provider["platform"],
                     "resource_id": None,
                     "state": "not-configured",
                     "type": provider["type"],
+                    "actions": [],
+                    "details": {},
+                    "models": [],
                     "usage": {"status": "unconfigured"},
                 }
                 for provider in controller.available_providers

@@ -286,12 +286,12 @@ class ControlStore:
                             )
                             routes[family] = [
                                 {
+                                    "provider": target,
                                     "model": (
                                         "grok-imagine"
                                         if target == "cliproxyapi"
                                         else package
                                     ),
-                                    "provider": target,
                                 }
                                 if isinstance(target, str)
                                 else target

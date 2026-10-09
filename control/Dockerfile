@@ -14,7 +14,7 @@ COPY pyproject.toml uv.lock README.md ./
 COPY catalogue ./catalogue
 COPY control ./control
 COPY providers ./providers
-RUN uv export --frozen --no-dev --extra modal --no-emit-project \
+RUN uv export --extra modal --frozen --no-dev --no-emit-project \
       --no-hashes --output-file /tmp/requirements.txt \
     && uv pip install --python "${VIRTUAL_ENV}/bin/python" --requirements /tmp/requirements.txt \
     && rm /tmp/requirements.txt

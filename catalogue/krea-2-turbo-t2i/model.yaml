@@ -1,22 +1,22 @@
 id: krea-2-turbo/text-to-image
-profile: krea-2-turbo
 operation: image_generation
+owned_by: krea
+profile: krea-2-turbo
 workflow: workflow.json
 workflow_sha256: 8ddf9b1f1a0c2b4a4f55de445229ed73b61142baddc06d52d76dd87bc74678fd
-owned_by: krea
 aliases: [krea-2-turbo]
-input_map:
-  prompt: { node: "4", input: text }
-  width: { node: "6", input: width }
-  height: { node: "6", input: height }
-  seed: { node: "7", input: seed }
-  steps: { node: "7", input: steps }
-output: { node: "9", type: image }
 defaults:
-  width: 1024
   height: 1024
   seed: 0
   steps: 8
+  width: 1024
+input_map:
+  height: { input: height, node: "6" }
+  prompt: { input: text, node: "4" }
+  seed: { input: seed, node: "7" }
+  steps: { input: steps, node: "7" }
+  width: { input: width, node: "6" }
+output: { node: "9", type: image }
 required_files:
   - diffusion_models/krea2_turbo_fp8_scaled.safetensors
   - text_encoders/qwen3vl_4b_fp8_scaled.safetensors

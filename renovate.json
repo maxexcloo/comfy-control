@@ -1,21 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "dependencyDashboard": false,
-  "extends": ["config:recommended", ":enablePreCommit"],
   "customManagers": [
     {
-      "autoReplaceStringTemplate": "# renovate: datasource=git-tags packageName=https://github.com/Comfy-Org/ComfyUI.git\n# ComfyUI {{{newValue}}}. Keep the release label and immutable commit in sync.\nARG COMFYUI_REF={{{newDigest}}}",
       "customType": "regex",
       "datasourceTemplate": "git-tags",
       "depNameTemplate": "ComfyUI",
+      "packageNameTemplate": "https://github.com/Comfy-Org/ComfyUI.git",
+      "versioningTemplate": "semver-coerced",
+      "autoReplaceStringTemplate": "# renovate: datasource=git-tags packageName=https://github.com/Comfy-Org/ComfyUI.git\n# ComfyUI {{{newValue}}}. Keep the release label and immutable commit in sync.\nARG COMFYUI_REF={{{newDigest}}}",
       "managerFilePatterns": ["/^worker/Dockerfile$/"],
       "matchStrings": [
         "# renovate: datasource=git-tags packageName=https://github\\.com/Comfy-Org/ComfyUI\\.git\\n# ComfyUI (?<currentValue>v\\d+\\.\\d+\\.\\d+)\\. Keep the release label and immutable commit in sync\\.\\nARG COMFYUI_REF=(?<currentDigest>[a-f0-9]{40})"
-      ],
-      "packageNameTemplate": "https://github.com/Comfy-Org/ComfyUI.git",
-      "versioningTemplate": "semver-coerced"
+      ]
     }
   ],
+  "extends": ["config:recommended", ":enablePreCommit"],
   "packageRules": [
     {
       "allowedVersions": "/^13\\.0\\./",

@@ -177,8 +177,8 @@ async def generate_image(request: Request, operation: str, path: str) -> Respons
                     else "application/json"
                 ),
                 headers={
-                    "x-comfy-provider": target.provider,
                     "x-comfy-history-id": history_id,
+                    "x-comfy-provider": target.provider,
                     "x-request-id": request_id,
                 },
             )
@@ -247,11 +247,11 @@ async def image_generations(request: Request) -> Response:
                         "allOf": [
                             ImageUpscaleRequest.model_json_schema(),
                             {
+                                "type": "object",
                                 "properties": {
                                     "image": {"format": "binary", "type": "string"}
                                 },
                                 "required": ["image"],
-                                "type": "object",
                             },
                         ]
                     }
@@ -389,26 +389,26 @@ async def image_upscales(request: Request) -> Response:
     response_model=ImageGenerationResponse,
     openapi_extra={
         "requestBody": {
+            "required": True,
             "content": {
                 "multipart/form-data": {
                     "schema": {
                         "additionalProperties": True,
+                        "type": "object",
                         "properties": {
                             "image": {
                                 "format": "binary",
-                                "items": {"format": "binary", "type": "string"},
                                 "type": "array",
+                                "items": {"format": "binary", "type": "string"},
                             },
                             "model": {"type": "string"},
                             "prompt": {"type": "string"},
                             "provider": {"type": "string"},
                         },
                         "required": ["image", "model", "prompt"],
-                        "type": "object",
                     }
                 }
             },
-            "required": True,
         }
     },
 )
@@ -587,8 +587,8 @@ async def image_edits(request: Request) -> Response:
                     else "application/json"
                 ),
                 headers={
-                    "x-comfy-provider": target.provider,
                     "x-comfy-history-id": history_id,
+                    "x-comfy-provider": target.provider,
                     "x-request-id": request_id,
                 },
             )

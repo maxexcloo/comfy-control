@@ -21,7 +21,7 @@ ENV BUILTIN_CATALOGUE_DIR=/opt/comfy-control/catalogue \
 
 RUN sed -i "s|http://deb.debian.org|https://deb.debian.org|g" /etc/apt/sources.list.d/debian.sources && \
     apt-get update && \
-    apt-get install -y --no-install-recommends build-essential ca-certificates ffmpeg git && \
+    apt-get install --no-install-recommends -y build-essential ca-certificates ffmpeg git && \
     rm -rf /var/lib/apt/lists/* && \
     uv venv "${VIRTUAL_ENV}" && \
     uv pip install --python "${VIRTUAL_ENV}/bin/python" pip
@@ -31,8 +31,8 @@ RUN git init /opt/ComfyUI \
     && git -C /opt/ComfyUI remote add origin https://github.com/Comfy-Org/ComfyUI.git \
     && git -C /opt/ComfyUI fetch --depth 1 origin "${COMFYUI_REF}" \
     && git -C /opt/ComfyUI checkout --detach FETCH_HEAD \
-    && uv pip install --python "${VIRTUAL_ENV}/bin/python" \
-      --constraints /tmp/worker-constraints.txt \
+    && uv pip install --constraints /tmp/worker-constraints.txt \
+      --python "${VIRTUAL_ENV}/bin/python" \
       --requirements /opt/ComfyUI/requirements.txt \
     && rm /tmp/worker-constraints.txt
 
@@ -40,7 +40,7 @@ WORKDIR /opt/comfy-control
 COPY pyproject.toml uv.lock README.md ./
 COPY catalogue ./catalogue
 COPY worker ./worker
-RUN uv export --frozen --no-dev --extra build --extra vast --no-emit-project \
+RUN uv export --extra build --extra vast --frozen --no-dev --no-emit-project \
       --no-hashes --output-file /tmp/requirements.txt \
     && uv pip install --python "${VIRTUAL_ENV}/bin/python" --requirements /tmp/requirements.txt \
     && rm /tmp/requirements.txt

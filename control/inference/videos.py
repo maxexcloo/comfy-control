@@ -29,6 +29,7 @@ router = APIRouter(prefix="/v1", tags=["inference"])
                 "multipart/form-data": {
                     "schema": {
                         "additionalProperties": True,
+                        "type": "object",
                         "properties": {
                             "image": {"format": "binary", "type": "string"},
                             "model": {"type": "string"},
@@ -36,7 +37,6 @@ router = APIRouter(prefix="/v1", tags=["inference"])
                             "provider": {"type": "string"},
                         },
                         "required": ["model", "prompt"],
-                        "type": "object",
                     }
                 },
             },
@@ -189,11 +189,11 @@ async def create_video(request: Request) -> Response:
         return error("video queue is full", 429, "video_queue_full")
     return JSONResponse(
         {
-            "id": public_id,
-            "object": "video",
-            "model": model_id,
-            "status": "queued",
             "created_at": job.created_at,
+            "id": public_id,
+            "model": model_id,
+            "object": "video",
+            "status": "queued",
         }
     )
 
@@ -226,13 +226,13 @@ async def video_response(job_id: str, request: Request, *, content: bool) -> Res
             return JSONResponse(response_data)
         return JSONResponse(
             {
-                "id": job.id,
-                "object": "video",
-                "model": job.model,
-                "status": job.status,
                 "created_at": job.created_at,
                 "error": job.error,
+                "id": job.id,
+                "model": job.model,
+                "object": "video",
                 "output_url": None,
+                "status": job.status,
             }
         )
     if job.status != "completed":

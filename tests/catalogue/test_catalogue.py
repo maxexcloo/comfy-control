@@ -8,7 +8,7 @@ ROOT = Path(__file__).parents[2]
 def test_catalogue_loads_and_renders_workflow():
     catalogue = Catalogue.load((ROOT / "catalogue",))
     model = catalogue.get("flux-2-klein-9b")
-    graph = model.render({"prompt": "a red fox", "width": 768, "seed": 42})
+    graph = model.render({"prompt": "a red fox", "seed": 42, "width": 768})
 
     assert model.id == "flux-2-klein-9b/text-to-image"
     assert graph["4"]["inputs"]["text"] == "a red fox"
@@ -29,7 +29,7 @@ def test_catalogue_maps_one_parameter_to_multiple_nodes():
 def test_catalogue_maps_image_edit_inputs_to_reference_workflow():
     catalogue = Catalogue.load((ROOT / "catalogue",))
     graph = catalogue.get("flux-2-klein-9b-edit").render(
-        {"prompt": "change the sky", "image": "input.png", "seed": 7, "steps": 8}
+        {"image": "input.png", "prompt": "change the sky", "seed": 7, "steps": 8}
     )
 
     assert graph["8"]["inputs"]["text"] == "change the sky"
@@ -44,13 +44,13 @@ def test_catalogue_maps_image_to_video_first_frame():
     catalogue = Catalogue.load((ROOT / "catalogue",))
     graph = catalogue.get("minimax-h3-i2v").render(
         {
-            "prompt": "walk forward",
-            "image": "frame.png",
-            "width": 1344,
             "height": 768,
+            "image": "frame.png",
             "length": 124,
+            "prompt": "walk forward",
             "seed": 3,
             "steps": 16,
+            "width": 1344,
         }
     )
 
