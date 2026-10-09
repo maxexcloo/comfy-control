@@ -22,32 +22,32 @@ repos:
       - id: check-renovate
   - repo: local
     hooks:
-      - name: Lint GitHub Actions workflows
-        id: actionlint
+      - id: actionlint
+        name: Lint GitHub Actions Workflows
         entry: mise exec -- actionlint
         files: ^\.github/workflows/.*\.ya?ml$
         language: system
-      - name: Lint Dockerfiles
-        id: hadolint
+      - id: hadolint
+        name: Lint Dockerfiles
         entry: mise exec -- hadolint
         files: (^|/)Dockerfile(\.[^/]+)?$
         language: system
         args:
           - --failure-threshold
           - error
-      - name: Check formatting
-        id: prettier
+      - id: prettier
+        name: Check Formatting
         entry: mise exec -- prettier --check
         files: \.(css|html|js|json|md|yaml)$
         language: system
-      - name: Lint Python
-        id: ruff-check
+      - id: ruff-check
+        name: Lint Python
         entry: mise exec -- ruff check --extend-select I
         language: system
         types:
           - python
-      - name: Check Python formatting
-        id: ruff-format
+      - id: ruff-format
+        name: Check Python Formatting
         entry: mise exec -- ruff format --check
         language: system
         types:

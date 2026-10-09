@@ -12,12 +12,12 @@ ENV BUILTIN_CATALOGUE_DIR=/opt/comfy-control/catalogue \
     DEBIAN_FRONTEND=noninteractive \
     HF_XET_HIGH_PERFORMANCE=1 \
     MODEL_PROFILES=flux-2-klein-9b \
-    WORKER_MODE=pod \
     PATH=/opt/venv/bin:${PATH} \
     PIP_NO_CACHE_DIR=1 \
     PORT=8000 \
     PYTHONUNBUFFERED=1 \
-    VIRTUAL_ENV=/opt/venv
+    VIRTUAL_ENV=/opt/venv \
+    WORKER_MODE=pod
 
 RUN sed -i "s|http://deb.debian.org|https://deb.debian.org|g" /etc/apt/sources.list.d/debian.sources && \
     apt-get update && \
